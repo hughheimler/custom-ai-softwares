@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom AI Softwares | Enterprise AI Agency & Client Portal</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f4ff',
+                            100: '#e0e8ff',
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            accent: '#06b6d4',
+                            neon: '#10b981',
+                            glow: '#3b82f6'
+                        },
+                        dark: {
+                            bg: '#07080e',
+                            card: '#0f111a',
+                            border: '#1e2336',
+                            hover: '#181b2a'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #07080e;
+            color: #f3f4f6;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Subtle grid background */
+        .bg-grid-pattern {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+
+        /* Glassmorphism styling */
+        .glass-panel {
+            background: rgba(15, 17, 26, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card {
+            background: rgba(20, 24, 38, 0.75);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -10px rgba(79, 70, 229, 0.25);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #07080e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e2336;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4f46e5;
+        }
+
+        /* Pulse effects */
+        @keyframes pulse-light {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .animate-pulse-light {
+            animation: pulse-light 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-grid-pattern min-h-screen flex flex-col justify-between text-slate-200">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-24 right-5 z-50 flex flex-col gap-2 max-w-sm pointer-events-none"></div>
+
+    <header class="sticky top-0 z-40 border-b border-dark-border glass-panel">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Brand Logo & Header Title -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-brand-accent to-emerald-400 p-[2px] shadow-lg shadow-brand-500/20">
+                        <div class="w-full h-full bg-dark-bg rounded-[10px] flex items-center justify-center">
+                            <i class="fa-solid fa-brain text-brand-400 text-lg"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h1 class="font-extrabold text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-brand-400">
+                            Custom AI Softwares
+                        </h1>
+                        <span class="block text-[10px] font-mono tracking-wider text-emerald-400 uppercase -mt-1">
+                            ● Enterprise AI Agency Engine
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Tabs -->
+                <nav class="hidden md:flex space-x-1 glass-panel px-3 py-1.5 rounded-full border border-slate-800">
+                    <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-4 py-2 rounded-full text-xs font-semibold transition-all duration-200 text-white bg-brand-600/80 shadow-sm">
+                        <i class="fa-solid fa-layer-group mr-1.5"></i> Packages & Catalog
+                    </button>
+                    <button onclick="switchTab('brief')" id="nav-brief" class="nav-btn px-4 py-2 rounded-full text-xs font-semibold transition-all duration-200 text-slate-400 hover:text-white hover:bg-dark-hover">
+                        <i class="fa-solid fa-file-pen mr-1.5"></i> Submit AI Brief
+                    </button>
+                    <button onclick="switchTab('chat')" id="nav-chat" class="nav-btn px-4 py-2 rounded-full text-xs font-semibold transition-all duration-200 text-slate-400 hover:text-white hover:bg-dark-hover relative">
+                        <i class="fa-solid fa-comments mr-1.5"></i> Direct Messaging
+                        <span id="chat-badge" class="hidden absolute -top-1 -right-1 w-2.5 h-2.5 bg-brand-accent rounded-full animate-ping"></span>
+                    </button>
+                    <button onclick="switchTab('checkout')" id="nav-checkout" class="nav-btn px-4 py-2 rounded-full text-xs font-semibold transition-all duration-200 text-slate-400 hover:text-white hover:bg-dark-hover">
+                        <i class="fa-solid fa-calculator mr-1.5"></i> Quote & Down Payment
+                    </button>
+                </nav>
+
+                <!-- Actions Header -->
+                <div class="flex items-center space-x-3">
+                    <button onclick="openDevDrawer()" class="hidden lg:flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-mono bg-dark-card hover:bg-dark-border border border-slate-700/60 text-slate-300 transition duration-200">
+                        <i class="fa-brands fa-stripe text-brand-400 text-base"></i>
+                        <span>Stripe Setup Code</span>
+                    </button>
+                    
+                    <button onclick="switchTab('brief')" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-brand-600 to-brand-accent hover:opacity-90 text-white shadow-lg shadow-brand-600/25 transition">
+                        Start Custom Project
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Scrollable Row -->
+        <div class="flex md:hidden border-t border-dark-border overflow-x-auto py-2.5 px-4 space-x-2 no-scrollbar bg-dark-bg/90">
+            <button onclick="switchTab('home')" id="mobile-nav-home" class="px-3.5 py-1.5 rounded-lg text-xs whitespace-nowrap font-medium text-white bg-brand-600">Packages</button>
+            <button onclick="switchTab('brief')" id="mobile-nav-brief" class="px-3.5 py-1.5 rounded-lg text-xs whitespace-nowrap font-medium text-slate-400 bg-dark-card">Submit Brief</button>
+            <button onclick="switchTab('chat')" id="mobile-nav-chat" class="px-3.5 py-1.5 rounded-lg text-xs whitespace-nowrap font-medium text-slate-400 bg-dark-card">Direct Messages</button>
+            <button onclick="switchTab('checkout')" id="mobile-nav-checkout" class="px-3.5 py-1.5 rounded-lg text-xs whitespace-nowrap font-medium text-slate-400 bg-dark-card">Down Payment</button>
+            <button onclick="openDevDrawer()" class="px-3.5 py-1.5 rounded-lg text-xs whitespace-nowrap font-medium text-slate-400 bg-dark-card">Stripe API Docs</button>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- Dynamic Milestone Status Banner -->
+        <div class="mb-10 glass-panel rounded-2xl p-6 border border-dark-border relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-brand-600/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-2">
+                <div>
+                    <span class="text-xs font-mono text-brand-400 uppercase tracking-widest">Active Client Tracker</span>
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        Project Status:
+                        <span id="current-phase-badge" class="text-xs px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 font-semibold">
+                            Phase 1: Project Scope & Quote Pending
+                        </span>
+                    </h3>
+                </div>
+                <div class="text-xs font-mono text-slate-400 bg-dark-card px-3 py-1.5 rounded-lg border border-slate-800 w-fit">
+                    Active Order: <span id="project-id-display" class="text-slate-200 font-bold">CA-AI-8821</span>
+                </div>
+            </div>
+
+            <!-- 4-Step Milestone Progress Bar -->
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 pt-2">
+                <!-- Step 1 -->
+                <div id="step-1" class="step-card flex items-center sm:flex-col sm:items-start p-3 rounded-xl bg-brand-600/20 border border-brand-500/50 transition">
+                    <div class="w-7 h-7 rounded-full bg-brand-500 text-white font-bold text-xs flex items-center justify-center shrink-0 mr-3 sm:mr-0 sm:mb-2">1</div>
+                    <div>
+                        <p class="text-xs font-semibold text-white">1. Scope & Quote</p>
+                        <p class="text-[10px] text-slate-400">Requirements Agreeds</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div id="step-2" class="step-card flex items-center sm:flex-col sm:items-start p-3 rounded-xl bg-dark-card border border-dark-border text-slate-500 transition">
+                    <div class="w-7 h-7 rounded-full bg-dark-border text-slate-400 font-bold text-xs flex items-center justify-center shrink-0 mr-3 sm:mr-0 sm:mb-2">2</div>
+                    <div>
+                        <p class="text-xs font-semibold text-slate-300">2. Down Payment</p>
+                        <p class="text-[10px] text-slate-500">25% - 50% Deposit (CAD)</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div id="step-3" class="step-card flex items-center sm:flex-col sm:items-start p-3 rounded-xl bg-dark-card border border-dark-border text-slate-500 transition">
+                    <div class="w-7 h-7 rounded-full bg-dark-border text-slate-400 font-bold text-xs flex items-center justify-center shrink-0 mr-3 sm:mr-0 sm:mb-2">3</div>
+                    <div>
+                        <p class="text-xs font-semibold text-slate-300">3. Active Development</p>
+                        <p class="text-[10px] text-slate-500">Work Initiated & GPU Build</p>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div id="step-4" class="step-card flex items-center sm:flex-col sm:items-start p-3 rounded-xl bg-dark-card border border-dark-border text-slate-500 transition">
+                    <div class="w-7 h-7 rounded-full bg-dark-border text-slate-400 font-bold text-xs flex items-center justify-center shrink-0 mr-3 sm:mr-0 sm:mb-2">4</div>
+                    <div>
+                        <p class="text-xs font-semibold text-slate-300">4. Final Handover</p>
+                        <p class="text-[10px] text-slate-500">Final Balance & IP Transfer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= VIEW 1: HOME & CATALOG SOLUTIONS ================= -->
+        <div id="view-home" class="tab-view space-y-12">
+            <!-- Hero Banner -->
+            <div class="relative rounded-3xl overflow-hidden glass-panel border border-brand-500/20 p-8 sm:p-12 text-center sm:text-left flex flex-col lg:flex-row items-center justify-between gap-8">
+                <div class="max-w-2xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-400 text-xs font-medium mb-4">
+                        <i class="fa-solid fa-sparkles"></i> Custom AI Softwares Engine & Production Agency
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold text-white leading-tight tracking-tight">
+                        We Build Custom AI Software <br>
+                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-brand-400 via-brand-accent to-emerald-400">
+                            Pay Deposit To Lock In Build
+                        </span>
+                    </h2>
+                    <p class="mt-4 text-slate-400 text-sm sm:text-base leading-relaxed">
+                        Submit your specifications, receive an instant scope quote in Canadian Dollars (CA$), and make a initial down payment (25%-50%) before engineering commences.
+                    </p>
+                    <div class="mt-8 flex flex-wrap gap-4 justify-center sm:justify-start">
+                        <button onclick="switchTab('brief')" class="px-6 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-brand-600 to-brand-accent hover:opacity-90 text-white shadow-xl shadow-brand-500/20 transition flex items-center gap-2">
+                            <span>Describe What Software You Need</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                        <button onclick="switchTab('checkout')" class="px-6 py-3.5 rounded-xl font-bold text-sm glass-card border border-slate-700 text-slate-200 hover:text-white hover:bg-dark-hover transition flex items-center gap-2">
+                            <i class="fa-solid fa-calculator text-brand-accent"></i>
+                            <span>Down Payment Calculator</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Live Metrics Card -->
+                <div class="w-full lg:w-80 glass-card rounded-2xl p-6 border border-slate-800 space-y-4">
+                    <div class="text-xs font-mono text-slate-400 uppercase tracking-widest border-b border-slate-800 pb-2">Agency Guarantee</div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs text-slate-400">Currency</span>
+                        <span class="text-xs font-bold font-mono text-emerald-400">CAD (CA$)</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs text-slate-400">Initial Down Payment</span>
+                        <span class="text-xs font-bold text-slate-200">25% / 50% Milestone</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs text-slate-400">Build Commencement</span>
+                        <span class="text-xs font-semibold text-emerald-400">Immediate Post Deposit</span>
+                    </div>
+                    <div class="pt-2 border-t border-slate-800 text-[11px] text-slate-400 flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved text-brand-400"></i>
+                        <span>100% Code IP & Source Transfer Included</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Service Solutions Packages -->
+            <div>
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-2">
+                    <div>
+                        <h3 class="text-2xl font-bold text-white">Pre-Packaged AI Softwares Tiers</h3>
+                        <p class="text-sm text-slate-400 mt-1">Select any package to pre-fill your brief and compute your down payment immediately.</p>
+                    </div>
+                    <div class="text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg">
+                        All Prices Listed in Canadian Dollars (CA$)
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Package 1 -->
+                    <div class="glass-card rounded-2xl p-6 flex flex-col justify-between border border-dark-border relative">
+                        <div class="space-y-4">
+                            <div class="w-12 h-12 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-400 text-xl">
+                                <i class="fa-solid fa-robot"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-bold text-white">Custom AI Chatbot Integration</h4>
+                                <p class="text-xs text-slate-400 mt-1">AI agent integrated into your website/SaaS with custom knowledge base.</p>
+                            </div>
+                            <div class="py-3 border-y border-slate-800 space-y-2 text-xs text-slate-300">
+                                <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> Custom Persona & Guardrails</p>
+                                <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> Embeddable JS / React Widget</p>
+                                <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> OpenAI / Claude API Setup</p>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-mono text-slate-400 uppercase block">Total Quote</span>
+                                <div class="text-2xl font-extrabold text-white font-mono">CA$3,500 <span class="text-xs font-normal text-slate-400">CAD</span></div>
+                                <span class="text-[11px] text-emerald-400 font-medium">Down payment (50%): CA$1,750 CAD</span>
+                            </div>
+                        </div>
+                        <button onclick="selectPackage('Custom AI Chatbot Integration', 3500, 'Custom website chatbot connected to our internal docs with instant responses.')" class="mt-6 w-full py-3 rounded-xl text-xs font-bold bg-dark-border hover:bg-brand-600 text-white transition flex items-center justify-center gap-2">
+                            <span>Select Package & Calculate Deposit</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                    </div>
+
+                    <!-- Package 2 (Featured) -->
+                    <div class="glass-card rounded-2xl p-6 flex flex-col justify-between border-2 border-brand-500/50 relative bg-gradient-to-b from-brand-600/10 to-transparent">
+                        <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 px-3 py-0.5 bg-brand-500 text-white font-bold text-[10px] rounded-full uppercase tracking-wider">
+                            Most Requested
+                        </div>
+                        <div class="space-y-4">
+                            <div class="w-12 h-12 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl">
+                                <i class="fa-solid fa-diagram-project"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-bold text-white">Custom AI Workflow Automation</h4>
+                                <p class="text-xs text-slate-400 mt-1">Autonomous agent pipelines handling document processing & tasks.</p>
+                            </div>
+                            <div class="py-3 border-y border-slate-800 space-y-2 text-xs text-slate-300">
+                                <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> Multi-Agent LangGraph System</p>
+                                <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> PDF & Document OCR Parsing</p>
+                                <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> CRM & Webhook Integration</p>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-mono text-slate-400 uppercase block">Total Quote</span>
+                                <div class="text-2xl font-extrabold text-white font-mono">CA$8,500 <span class="text-xs font-normal text-slate-400">CAD</span></div>
+                                <span class="text-[11px] text-emerald-400 font-medium">Down payment (50%): CA$4,250 CAD</span>
+                            </div>
+                        </div>
+                        <button onclick="selectPackage('Custom AI Workflow Automation', 8500, 'Automated document processing system with autonomous agent verification and database integration.')" class="mt-6 w-full py-3 rounded-xl text-xs font-bold bg-gradient-to-r from-brand-600 to-brand-accent hover:opacity-90 text-white transition shadow-lg shadow-brand-500/20 flex items-center justify-center gap-2">
+                            <span>Select Package & Calculate Deposit</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                    </div>
+
+                    <!-- Package 3 -->
+                    <div class="glass-card rounded-2xl p-6 flex flex-col justify-between border border-dark-border relative">
+                        <div class="space-y-4">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl">
+                                <i class="fa-solid fa-server"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-bold text-white">Autonomous Enterprise AI Engine</h4>
+                                <p class="text-xs text-slate-400 mt-1">Dedicated fine-tuned Llama/Claude platform hosted on private GPU infra.</p>
+                            </div>
+                            <div class="py-3 border-y border-slate-800 space-y-2 text-xs text-slate-300">
+                                <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> Private vLLM API Deployment</p>
+                                <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> Enterprise RAG Vector Infra</p>
+                                <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> Custom UI Portal + Auth Stack</p>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-mono text-slate-400 uppercase block">Total Quote</span>
+                                <div class="text-2xl font-extrabold text-white font-mono">CA$18,000 <span class="text-xs font-normal text-slate-400">CAD</span></div>
+                                <span class="text-[11px] text-emerald-400 font-medium">Down payment (50%): CA$9,000 CAD</span>
+                            </div>
+                        </div>
+                        <button onclick="selectPackage('Autonomous Enterprise AI Engine', 18000, 'Enterprise grade private AI engine with custom model fine-tuning and secure local vector store.')" class="mt-6 w-full py-3 rounded-xl text-xs font-bold bg-dark-border hover:bg-brand-600 text-white transition flex items-center justify-center gap-2">
+                            <span>Select Package & Calculate Deposit</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= VIEW 2: SUBMIT SOFTWARE BRIEF ================= -->
+        <div id="view-brief" class="tab-view hidden space-y-8 max-w-4xl mx-auto">
+            <div class="text-center">
+                <span class="text-xs font-mono text-brand-400 uppercase tracking-widest">Describe Your Software</span>
+                <h2 class="text-3xl font-extrabold text-white mt-1">Submit Custom AI Requirement Brief</h2>
+                <p class="text-slate-400 text-sm mt-2 max-w-xl mx-auto">Tell us what you want built. We review your scope, confirm the total quote in CA$, and issue your down payment terms.</p>
+            </div>
+
+            <form id="intake-form" onsubmit="handleBriefSubmit(event)" class="glass-panel p-6 sm:p-8 rounded-3xl border border-dark-border space-y-6">
+                <!-- Project Name & Contact -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Project Name / Software Title *</label>
+                        <input type="text" id="brief-title" required placeholder="e.g. Real Estate Contract AI Analyzer" class="w-full px-4 py-3 rounded-xl bg-dark-card border border-slate-700 text-white focus:outline-none focus:border-brand-500 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Your Name / Organization *</label>
+                        <input type="text" id="brief-client" required placeholder="e.g. Apex Tech Solutions Inc." class="w-full px-4 py-3 rounded-xl bg-dark-card border border-slate-700 text-white focus:outline-none focus:border-brand-500 text-sm">
+                    </div>
+                </div>
+
+                <!-- Software Description Textarea -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Describe What Software You Want Built *</label>
+                    <textarea id="brief-scope" rows="5" required placeholder="Detail the exact functionality, software requirements, user roles, integrations (Slack, PostgreSQL, Zapier), and desired outcomes..." class="w-full px-4 py-3 rounded-xl bg-dark-card border border-slate-700 text-white focus:outline-none focus:border-brand-500 text-sm leading-relaxed"></textarea>
+                </div>
+
+                <!-- Budget & Down payment expectation -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Estimated Budget (CA$) *</label>
+                        <input type="number" id="brief-budget" required min="500" step="250" value="8500" class="w-full px-4 py-3 rounded-xl bg-dark-card border border-slate-700 text-white font-mono font-bold focus:outline-none focus:border-brand-500 text-sm">
+                        <span class="text-[11px] text-slate-500 mt-1 block">Specified in Canadian Dollars (CA$)</span>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Desired Down Payment Terms</label>
+                        <select id="brief-deposit-terms" class="w-full px-4 py-3 rounded-xl bg-dark-card border border-slate-700 text-white focus:outline-none focus:border-brand-500 text-sm">
+                            <option value="50">50% Down Payment / 50% Handover (Standard)</option>
+                            <option value="33">33% Down Payment / 33% Beta / 34% Handover</option>
+                            <option value="25">25% Down Payment / 75% Completion</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <p class="text-xs text-slate-400">
+                        <i class="fa-solid fa-lock text-emerald-400 mr-1"></i> Submitting syncs your brief directly to your Direct Messaging thread.
+                    </p>
+                    <button type="submit" class="w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-xs bg-gradient-to-r from-brand-600 to-brand-accent hover:opacity-90 text-white shadow-lg shadow-brand-500/20 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>Submit Brief & Send Message</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- ================= VIEW 3: DIRECT MESSAGING HUB ================= -->
+        <div id="view-chat" class="tab-view hidden space-y-6 max-w-5xl mx-auto">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                    <h2 class="text-2xl font-bold text-white">Direct Messaging & Project Scope Box</h2>
+                    <p class="text-xs text-slate-400">Message the lead AI developer directly regarding quotes, down payments, and build updates.</p>
+                </div>
+                <div class="flex items-center space-x-2 bg-dark-card px-3 py-1.5 rounded-xl border border-slate-800 w-fit">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span class="text-xs font-mono text-emerald-400 font-semibold">Lead Developer Connected</span>
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-3xl border border-dark-border h-[540px] flex flex-col overflow-hidden">
+                <!-- Chat Messages Scroll Container -->
+                <div id="chat-messages" class="flex-grow p-6 overflow-y-auto space-y-4">
+                    <!-- Dynamic chat messages rendered here -->
+                </div>
+
+                <!-- Direct Input Message Form -->
+                <div class="p-4 bg-dark-card border-t border-dark-border">
+                    <form onsubmit="handleSendMessage(event)" class="flex gap-3 items-center">
+                        <input type="text" id="chat-input" placeholder="Type a message or clarify a requirement for your software build..." class="flex-grow px-4 py-3 rounded-xl bg-dark-bg border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 text-sm">
+                        <button type="submit" class="px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold transition flex items-center gap-2 shrink-0">
+                            <span>Send Message</span>
+                            <i class="fa-solid fa-paper-plane text-[10px]"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= VIEW 4: DOWN PAYMENT CALCULATOR & CHECKOUT ================= -->
+        <div id="view-checkout" class="tab-view hidden space-y-8 max-w-5xl mx-auto">
+            <div class="text-center">
+                <span class="text-xs font-mono text-brand-400 uppercase tracking-widest">Milestone Payment Engine</span>
+                <h2 class="text-3xl font-extrabold text-white mt-1">Down Payment Calculator & Payment Portal</h2>
+                <p class="text-slate-400 text-sm mt-2 max-w-xl mx-auto">Configure your software down payment in Canadian Dollars (CA$). Paying your deposit locks in your development spot and starts work immediately.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Down Payment Configuration Form -->
+                <div class="lg:col-span-6 glass-panel p-6 sm:p-8 rounded-3xl border border-dark-border space-y-6">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                        <i class="fa-solid fa-sliders text-brand-accent"></i>
+                        Milestone Quote Breakdown
+                    </h3>
+
+                    <!-- Project Title -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Software Project Title</label>
+                        <input type="text" id="calc-project-name" value="Custom AI Workflow Automation" oninput="updateCalculator()" class="w-full px-4 py-2.5 rounded-xl bg-dark-card border border-slate-700 text-white text-sm font-semibold">
+                    </div>
+
+                    <!-- Agreed Total Quote Field -->
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="text-xs font-semibold text-slate-300 uppercase tracking-wider">Total Agreed Software Quote (CA$)</label>
+                            <span class="text-xs font-mono text-brand-accent font-bold">CA$<span id="quote-total-text">8,500</span> CAD</span>
+                        </div>
+                        <input type="number" id="calc-total-quote" value="8500" step="250" min="500" oninput="updateCalculator()" class="w-full px-4 py-3 rounded-xl bg-dark-card border border-slate-700 text-white font-mono text-base font-bold focus:border-brand-500 focus:outline-none">
+                    </div>
+
+                    <!-- Down Payment Terms Choice Buttons -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Select Down Payment Percentage</label>
+                        <div class="grid grid-cols-3 gap-3">
+                            <button type="button" onclick="setDepositPercent(25)" id="pct-btn-25" class="pct-btn py-2.5 rounded-xl border border-slate-700 text-xs font-bold text-slate-300 hover:border-brand-500">25% Deposit</button>
+                            <button type="button" onclick="setDepositPercent(33)" id="pct-btn-33" class="pct-btn py-2.5 rounded-xl border border-slate-700 text-xs font-bold text-slate-300 hover:border-brand-500">33% Deposit</button>
+                            <button type="button" onclick="setDepositPercent(50)" id="pct-btn-50" class="pct-btn py-2.5 rounded-xl border border-brand-500 bg-brand-600/20 text-xs font-bold text-white">50% Deposit</button>
+                        </div>
+                    </div>
+
+                    <!-- Financial Summary Box -->
+                    <div class="bg-dark-card rounded-2xl p-5 border border-slate-800 space-y-3 font-mono text-xs">
+                        <div class="flex justify-between text-slate-400">
+                            <span>Total Software Quote:</span>
+                            <span class="text-slate-200 font-bold" id="summary-total">CA$8,500.00 CAD</span>
+                        </div>
+                        <div class="flex justify-between text-slate-400">
+                            <span>Down Payment Required (<span id="summary-pct">50</span>%):</span>
+                            <span class="text-emerald-400 font-bold text-sm" id="summary-deposit">CA$4,250.00 CAD</span>
+                        </div>
+                        <div class="flex justify-between text-slate-400 pt-2 border-t border-slate-800">
+                            <span>Balance Due Upon Completion:</span>
+                            <span class="text-slate-300" id="summary-balance">CA$4,250.00 CAD</span>
+                        </div>
+                    </div>
+
+                    <button onclick="openStripeModal()" class="w-full py-4 rounded-xl text-xs font-bold bg-gradient-to-r from-emerald-500 to-teal-400 hover:opacity-90 text-slate-950 transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-lock text-slate-950"></i>
+                        <span>Pay Down Payment Now (CA$)</span>
+                    </button>
+                </div>
+
+                <!-- Live Status & Payment Receipt Panel -->
+                <div class="lg:col-span-6 glass-panel p-6 sm:p-8 rounded-3xl border border-brand-500/30 space-y-6">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                        <i class="fa-solid fa-receipt text-emerald-400"></i>
+                        Deposit Escrow Summary
+                    </h3>
+
+                    <div id="payment-status-unpaid" class="space-y-4">
+                        <div class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs leading-relaxed">
+                            <i class="fa-solid fa-triangle-exclamation mr-1.5"></i>
+                            <strong>Down Payment Pending:</strong> Work on your custom AI software will begin immediately after the initial deposit is processed.
+                        </div>
+
+                        <div class="space-y-2 text-xs text-slate-300">
+                            <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Guaranteed initial code commit within 48 hours</p>
+                            <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Dedicated GPU instance allocated upon payment</p>
+                            <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Direct Slack / Message channel invite issued</p>
+                        </div>
+
+                        <div class="pt-4 border-t border-slate-800 flex justify-between items-center">
+                            <div>
+                                <span class="text-[10px] font-mono text-slate-500 uppercase block">Deposit Amount (CAD)</span>
+                                <span class="text-2xl font-extrabold text-emerald-400 font-mono" id="checkout-panel-amount">CA$4,250.00</span>
+                            </div>
+                            <button onclick="openStripeModal()" class="px-5 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition">
+                                Launch Payment
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Paid State Receipt (Shown after payment) -->
+                    <div id="payment-status-paid" class="hidden space-y-4">
+                        <div class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs leading-relaxed">
+                            <i class="fa-solid fa-circle-check text-emerald-400 mr-1.5 text-base"></i>
+                            <strong>Down Payment Confirmed!</strong> Work has officially started on your AI software.
+                        </div>
+
+                        <div class="p-4 bg-dark-bg rounded-2xl border border-slate-800 font-mono text-xs space-y-2">
+                            <div class="flex justify-between text-slate-400">
+                                <span>Stripe Intent ID:</span>
+                                <span class="text-slate-200" id="receipt-intent-id">pi_3Mxt8921_CAD</span>
+                            </div>
+                            <div class="flex justify-between text-slate-400">
+                                <span>Amount Paid:</span>
+                                <span class="text-emerald-400 font-bold" id="receipt-amount-paid">CA$4,250.00 CAD</span>
+                            </div>
+                            <div class="flex justify-between text-slate-400">
+                                <span>Payment Date:</span>
+                                <span class="text-slate-200" id="receipt-date">2026-09-22</span>
+                            </div>
+                            <div class="flex justify-between text-slate-400">
+                                <span>Build Status:</span>
+                                <span class="text-brand-accent font-bold">Active Engine Work</span>
+                            </div>
+                        </div>
+
+                        <button onclick="switchTab('chat')" class="w-full py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold transition">
+                            View Work Status in Direct Messages
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- STRIPE CHECKOUT MODAL -->
+    <div id="stripe-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="w-full max-w-md bg-dark-bg border border-dark-border rounded-3xl p-6 sm:p-8 space-y-6 relative shadow-2xl">
+            <button onclick="closeStripeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg p-2">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="flex items-center space-x-3 border-b border-slate-800 pb-4">
+                <i class="fa-brands fa-stripe text-4xl text-brand-400"></i>
+                <div>
+                    <h3 class="text-base font-bold text-white">Down Payment Checkout</h3>
+                    <p class="text-xs text-slate-400">Custom AI Softwares Agency Escrow</p>
+                </div>
+            </div>
+
+            <div class="bg-dark-card p-4 rounded-2xl border border-slate-800 space-y-1">
+                <span class="text-[10px] font-mono text-slate-500 uppercase block">Total Deposit Due Now (CAD)</span>
+                <div class="text-3xl font-extrabold text-emerald-400 font-mono" id="modal-pay-amount">CA$4,250.00</div>
+                <span class="text-[11px] text-slate-400 block" id="modal-project-title">Custom AI Workflow Automation</span>
+            </div>
+
+            <!-- Simulated Card Input Form -->
+            <form id="modal-payment-form" onsubmit="processStripePayment(event)" class="space-y-4">
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-400 mb-1 uppercase tracking-wider">Cardholder Full Name</label>
+                    <input type="text" id="card-name" required value="Alex Vance" class="w-full px-3.5 py-2.5 rounded-xl bg-dark-card border border-slate-700 text-xs text-white focus:outline-none focus:border-brand-500">
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-400 mb-1 uppercase tracking-wider">Card Number (Sandbox Simulated)</label>
+                    <div class="relative">
+                        <input type="text" id="card-number" required value="4242 4242 4242 4242" class="w-full px-3.5 py-2.5 rounded-xl bg-dark-card border border-slate-700 text-xs text-white font-mono focus:outline-none focus:border-brand-500">
+                        <div class="absolute right-3 top-2.5 flex space-x-1">
+                            <i class="fa-brands fa-cc-visa text-slate-400 text-base"></i>
+                            <i class="fa-brands fa-cc-mastercard text-slate-400 text-base"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-400 mb-1 uppercase tracking-wider">Expiry (MM/YY)</label>
+                        <input type="text" id="card-expiry" required value="12/28" class="w-full px-3.5 py-2.5 rounded-xl bg-dark-card border border-slate-700 text-xs text-white font-mono focus:outline-none focus:border-brand-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-400 mb-1 uppercase tracking-wider">CVC</label>
+                        <input type="text" id="card-cvc" required value="888" class="w-full px-3.5 py-2.5 rounded-xl bg-dark-card border border-slate-700 text-xs text-white font-mono focus:outline-none focus:border-brand-500">
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" id="modal-pay-btn" class="w-full py-3.5 rounded-xl text-xs font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span id="modal-pay-btn-text">Confirm & Pay Down Payment (CA$)</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- DEVELOPER & STRIPE CODE DRAWER -->
+    <div id="dev-drawer" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden transition-opacity flex justify-end">
+        <div class="w-full max-w-2xl bg-dark-bg border-l border-dark-border h-full overflow-y-auto p-6 sm:p-8 flex flex-col justify-between">
+            <div class="space-y-6">
+                <!-- Header -->
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-brands fa-stripe text-3xl text-brand-400"></i>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">Stripe Live API Integration</h3>
+                            <p class="text-xs text-slate-400">Node.js backend setup for custom down payments</p>
+                        </div>
+                    </div>
+                    <button onclick="closeDevDrawer()" class="text-slate-400 hover:text-white p-2 text-lg">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Live Key Input Setup -->
+                <div class="glass-card p-4 rounded-xl border border-slate-800 space-y-3">
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">Save Your Stripe Key (Persisted locally)</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="api-key-input" placeholder="pk_live_... or pk_test_..." class="flex-grow px-3 py-2 rounded-lg bg-dark-bg border border-slate-700 text-xs font-mono text-white focus:outline-none">
+                        <button onclick="saveApiKey()" class="px-4 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-xs font-bold text-white transition">Save Key</button>
+                    </div>
+                    <p id="key-feedback" class="text-[11px] font-mono text-slate-400"></p>
+                </div>
+
+                <!-- Node.js Backend Payment Intent Code Sample -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-mono text-slate-300">1. Express Node.js Create Down Payment Intent (CAD)</span>
+                        <button onclick="copyCode('code-intent')" class="text-[10px] font-mono text-brand-400 hover:underline">Copy Code</button>
+                    </div>
+                    <pre id="code-intent" class="bg-dark-card p-4 rounded-xl border border-slate-800 text-[11px] font-mono text-emerald-300 overflow-x-auto leading-relaxed">
+const express = require('express');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const app = express();
+
+app.post('/api/create-downpayment-intent', async (req, res) => {
+  const { quoteAmountCAD, depositPercent, projectId } = req.body;
+  
+  // Convert down payment in CAD to cents
+  const depositCents = Math.round((quoteAmountCAD * (depositPercent / 100)) * 100);
+
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: depositCents,
+    currency: 'cad', // Configured strictly for Canadian Dollars
+    metadata: {
+      projectId: projectId,
+      totalQuoteCAD: quoteAmountCAD,
+      depositPercent: `${depositPercent}%`
+    }
+  });
+
+  res.send({ clientSecret: paymentIntent.client_secret });
+});</pre>
+                </div>
+
+                <!-- Webhook Listener Code Sample -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-mono text-slate-300">2. Webhook Handler to Trigger Build Work</span>
+                        <button onclick="copyCode('code-webhook')" class="text-[10px] font-mono text-brand-400 hover:underline">Copy Code</button>
+                    </div>
+                    <pre id="code-webhook" class="bg-dark-card p-4 rounded-xl border border-slate-800 text-[11px] font-mono text-cyan-300 overflow-x-auto leading-relaxed">
+app.post('/api/stripe-webhook', express.raw({type: 'application/json'}), (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+  } catch (err) {
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  if (event.type === 'payment_intent.succeeded') {
+    const paymentIntent = event.data.object;
+    // Down payment received -> trigger engineering build pipeline!
+    console.log('Down payment paid for project:', paymentIntent.metadata.projectId);
+  }
+
+  res.json({ received: true });
+});</pre>
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-slate-800 flex justify-end">
+                <button onclick="closeDevDrawer()" class="px-6 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white transition">
+                    Close Drawer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-dark-border glass-panel mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+            <div>
+                <p class="font-semibold text-slate-400">Custom AI Softwares Agency © 2026</p>
+                <p class="mt-0.5">Proprietary AI Systems, Down Payment Milestone Escrow & Custom Engineering.</p>
+            </div>
+            <div class="flex space-x-6">
+                <a href="#" onclick="openDevDrawer(); return false;" class="hover:text-brand-400 transition">Stripe Integration</a>
+                <a href="#" onclick="switchTab('brief'); return false;" class="hover:text-brand-400 transition">Submit Brief</a>
+                <a href="#" onclick="switchTab('chat'); return false;" class="hover:text-brand-400 transition">Direct Messages</a>
+                <a href="#" onclick="switchTab('checkout'); return false;" class="hover:text-brand-400 transition">Down Payment</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Global Application State
+        const state = {
+            activeTab: 'home',
+            projectName: 'Custom AI Workflow Automation',
+            totalQuote: 8500,
+            depositPercent: 50,
+            paid: false,
+            phase: 1, // 1: Scope, 2: Down Payment, 3: Active Dev, 4: Handover
+            stripeKey: '',
+            messages: []
+        };
+
+        // Load State from LocalStorage
+        function loadState() {
+            const saved = localStorage.getItem('custom_ai_agency_state');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    state.projectName = parsed.projectName || state.projectName;
+                    state.totalQuote = parsed.totalQuote || state.totalQuote;
+                    state.depositPercent = parsed.depositPercent || state.depositPercent;
+                    state.paid = parsed.paid || false;
+                    state.phase = parsed.phase || 1;
+                    state.stripeKey = parsed.stripeKey || '';
+                    state.messages = parsed.messages || [];
+                } catch(e) {
+                    console.error('Error loading state', e);
+                }
+            }
+
+            // Seed default messages if empty
+            if (!state.messages || state.messages.length === 0) {
+                state.messages = [
+                    {
+                        sender: 'Lead AI Architect',
+                        text: 'Welcome to Custom AI Softwares! Describe what software you need in the brief or type here directly. Paying your initial down payment locks in your build slot.',
+                        time: 'System',
+                        isUser: false
+                    }
+                ];
+            }
+
+            // Update UI elements with restored state
+            document.getElementById('calc-project-name').value = state.projectName;
+            document.getElementById('calc-total-quote').value = state.totalQuote;
+            if (state.stripeKey) {
+                document.getElementById('api-key-input').value = state.stripeKey;
+            }
+
+            updateCalculator();
+            renderChatMessages();
+            if (state.paid) {
+                setPaidUI();
+            } else if (state.phase > 1) {
+                advancePhase(state.phase);
+            }
+        }
+
+        // Save State to LocalStorage
+        function saveState() {
+            localStorage.setItem('custom_ai_agency_state', JSON.stringify(state));
+        }
+
+        // Notification Toast Handler
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const bgClass = type === 'success' ? 'bg-emerald-500/90 text-slate-950 font-bold' : 
+                           type === 'error' ? 'bg-rose-500/90 text-white' : 'bg-brand-600/90 text-white';
+
+            toast.className = `p-3.5 rounded-xl shadow-xl text-xs backdrop-blur-md transition-all duration-300 transform translate-x-10 opacity-0 pointer-events-auto flex items-center gap-2 ${bgClass}`;
+            toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-circle-info'}"></i> <span>${message}</span>`;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-x-10', 'opacity-0');
+            }, 50);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-x-10');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // Navigation Handler
+        function switchTab(tabId) {
+            state.activeTab = tabId;
+            
+            // Hide all tab views
+            document.querySelectorAll('.tab-view').forEach(view => view.classList.add('hidden'));
+            
+            // Show target view
+            const target = document.getElementById(`view-${tabId}`);
+            if(target) target.classList.remove('hidden');
+
+            // Update desktop nav button styles
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-600/80', 'text-white');
+                btn.classList.add('text-slate-400');
+            });
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if(activeNav) {
+                activeNav.classList.add('bg-brand-600/80', 'text-white');
+                activeNav.classList.remove('text-slate-400');
+            }
+
+            // Update mobile nav button styles
+            document.querySelectorAll('[id^="mobile-nav-"]').forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white');
+                btn.classList.add('text-slate-400', 'bg-dark-card');
+            });
+            const activeMobileNav = document.getElementById(`mobile-nav-${tabId}`);
+            if(activeMobileNav) {
+                activeMobileNav.classList.add('bg-brand-600', 'text-white');
+                activeMobileNav.classList.remove('text-slate-400', 'bg-dark-card');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Down Payment Calculator Controls
+        function setDepositPercent(pct) {
+            state.depositPercent = pct;
+            
+            document.querySelectorAll('.pct-btn').forEach(btn => {
+                btn.classList.remove('border-brand-500', 'bg-brand-600/20', 'text-white');
+                btn.classList.add('border-slate-700', 'text-slate-300');
+            });
+            const selectedBtn = document.getElementById(`pct-btn-${pct}`);
+            if(selectedBtn) {
+                selectedBtn.classList.add('border-brand-500', 'bg-brand-600/20', 'text-white');
+                selectedBtn.classList.remove('border-slate-700', 'text-slate-300');
+            }
+
+            updateCalculator();
+            saveState();
+        }
+
+        function updateCalculator() {
+            const quoteInput = document.getElementById('calc-total-quote');
+            const nameInput = document.getElementById('calc-project-name');
+            
+            if(quoteInput) state.totalQuote = parseFloat(quoteInput.value) || 0;
+            if(nameInput) state.projectName = nameInput.value || 'Custom AI Software';
+
+            const depositVal = (state.totalQuote * (state.depositPercent / 100));
+            const balanceVal = state.totalQuote - depositVal;
+
+            // Formatted CAD Values
+            const formattedTotal = `CA$${state.totalQuote.toLocaleString('en-US', {minimumFractionDigits: 2})} CAD`;
+            const formattedDeposit = `CA$${depositVal.toLocaleString('en-US', {minimumFractionDigits: 2})} CAD`;
+            const formattedBalance = `CA$${balanceVal.toLocaleString('en-US', {minimumFractionDigits: 2})} CAD`;
+
+            document.getElementById('quote-total-text').innerText = state.totalQuote.toLocaleString();
+            document.getElementById('summary-total').innerText = formattedTotal;
+            document.getElementById('summary-pct').innerText = state.depositPercent;
+            document.getElementById('summary-deposit').innerText = formattedDeposit;
+            document.getElementById('summary-balance').innerText = formattedBalance;
+            document.getElementById('checkout-panel-amount').innerText = `CA$${depositVal.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+            document.getElementById('modal-pay-amount').innerText = `CA$${depositVal.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+            document.getElementById('modal-project-title').innerText = `${state.projectName} (${state.depositPercent}% Deposit)`;
+
+            saveState();
+        }
+
+        // Select Package Handler
+        function selectPackage(packageName, price, scopeDescription) {
+            state.projectName = packageName;
+            state.totalQuote = price;
+            
+            document.getElementById('calc-project-name').value = packageName;
+            document.getElementById('calc-total-quote').value = price;
+            document.getElementById('brief-title').value = packageName;
+            document.getElementById('brief-scope').value = scopeDescription;
+            document.getElementById('brief-budget').value = price;
+
+            updateCalculator();
+            showToast(`Selected "${packageName}" package!`, 'info');
+            switchTab('checkout');
+        }
+
+        // Handle Brief Form Submission
+        function handleBriefSubmit(e) {
+            e.preventDefault();
+            const title = document.getElementById('brief-title').value;
+            const client = document.getElementById('brief-client').value;
+            const scope = document.getElementById('brief-scope').value;
+            const budget = parseFloat(document.getElementById('brief-budget').value);
+
+            state.projectName = title;
+            state.totalQuote = budget;
+
+            if (state.phase < 2) {
+                advancePhase(2);
+            }
+
+            document.getElementById('calc-project-name').value = title;
+            document.getElementById('calc-total-quote').value = budget;
+            updateCalculator();
+
+            // Append brief details into Direct Messaging history
+            const briefMessage = `[PROJECT BRIEF SUBMITTED]\nClient: ${client}\nTitle: ${title}\nBudget: CA$${budget.toLocaleString()} CAD\nScope: ${scope}`;
+            appendChatMessage(client, briefMessage, true);
+
+            setTimeout(() => {
+                appendChatMessage("Lead AI Architect", `Thanks ${client}! I have received your requirements for "${title}". Total quote is confirmed at CA$${budget.toLocaleString()} CAD. Please proceed to pay the down payment so we can start building immediately.`);
+            }, 800);
+
+            showToast("Brief submitted & synced to Direct Messages!", "success");
+            switchTab('chat');
+        }
+
+        // Direct Messaging Logic
+        function handleSendMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            if(!message) return;
+
+            appendChatMessage("You", message, true);
+            input.value = '';
+
+            // Simulated AI developer response
+            setTimeout(() => {
+                let reply = "Message received. Our engineering team is reviewing your software scope. You can initiate work by placing your down payment in the Down Payment tab.";
+                if(message.toLowerCase().includes('down payment') || message.toLowerCase().includes('deposit') || message.toLowerCase().includes('cad')) {
+                    reply = "Our standard down payment is 50% in CAD, but you can also select 25% or 33% depending on your preferred milestone schedule.";
+                } else if(message.toLowerCase().includes('stripe')) {
+                    reply = "You can test the Stripe payment in sandbox mode using our checkout modal, or plug in your live Stripe API keys in the developer drawer.";
+                }
+                appendChatMessage("Lead AI Architect", reply, false);
+            }, 1000);
+        }
+
+        function appendChatMessage(sender, text, isUser = false) {
+            const msgObj = {
+                sender: sender,
+                text: text,
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                isUser: isUser
+            };
+
+            state.messages.push(msgObj);
+            saveState();
+            renderChatMessages();
+        }
+
+        function renderChatMessages() {
+            const chatBox = document.getElementById('chat-messages');
+            chatBox.innerHTML = '';
+
+            state.messages.forEach(msg => {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `flex gap-3 max-w-xl ${msg.isUser ? 'ml-auto flex-row-reverse' : ''}`;
+
+                msgDiv.innerHTML = `
+                    <div class="w-8 h-8 rounded-lg ${msg.isUser ? 'bg-brand-accent' : 'bg-brand-600'} flex items-center justify-center text-white text-xs font-bold shrink-0">
+                        ${msg.isUser ? 'YOU' : 'AI'}
+                    </div>
+                    <div class="space-y-1">
+                        <div class="flex items-center space-x-2 ${msg.isUser ? 'justify-end' : ''}">
+                            <span class="text-xs font-semibold text-white">${msg.sender}</span>
+                            <span class="text-[10px] text-slate-500 font-mono">${msg.time}</span>
+                        </div>
+                        <div class="glass-card p-3.5 rounded-2xl ${msg.isUser ? 'rounded-tr-none bg-brand-600/20 border-brand-500/40' : 'rounded-tl-none border-slate-800'} text-xs text-slate-200 leading-relaxed whitespace-pre-line">
+                            ${msg.text}
+                        </div>
+                    </div>
+                `;
+                chatBox.appendChild(msgDiv);
+            });
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Stripe Modal Controls
+        function openStripeModal() {
+            updateCalculator();
+            document.getElementById('stripe-modal').classList.remove('hidden');
+        }
+
+        function closeStripeModal() {
+            document.getElementById('stripe-modal').classList.add('hidden');
+        }
+
+        function processStripePayment(e) {
+            e.preventDefault();
+            const btn = document.getElementById('modal-pay-btn');
+            const btnText = document.getElementById('modal-pay-btn-text');
+
+            btn.disabled = true;
+            btnText.innerText = "Processing CAD Escrow via Stripe...";
+
+            setTimeout(() => {
+                state.paid = true;
+                advancePhase(3);
+                saveState();
+
+                closeStripeModal();
+                setPaidUI();
+
+                const depositVal = (state.totalQuote * (state.depositPercent / 100));
+                appendChatMessage("Stripe Escrow Webhook", `PAYMENT SUCCESS: Down payment of CA$${depositVal.toLocaleString()} CAD received! GPU engineering node provisioned. Development on "${state.projectName}" has officially started!`);
+
+                showToast("Down payment received! Work has officially started.", "success");
+            }, 1800);
+        }
+
+        function setPaidUI() {
+            document.getElementById('payment-status-unpaid').classList.add('hidden');
+            document.getElementById('payment-status-paid').classList.remove('hidden');
+
+            const depositVal = (state.totalQuote * (state.depositPercent / 100));
+            document.getElementById('receipt-amount-paid').innerText = `CA$${depositVal.toLocaleString('en-US', {minimumFractionDigits: 2})} CAD`;
+            document.getElementById('receipt-date').innerText = new Date().toISOString().split('T')[0];
+        }
+
+        // Advance Phase State
+        function advancePhase(targetPhase) {
+            state.phase = targetPhase;
+            saveState();
+
+            const badge = document.getElementById('current-phase-badge');
+            const idDisplay = document.getElementById('project-id-display');
+
+            if (targetPhase === 2) {
+                badge.className = "text-xs px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 font-semibold";
+                badge.innerText = "Phase 2: Brief Received - Down Payment Required";
+                document.getElementById('step-1').className = "step-card flex items-center sm:flex-col sm:items-start p-3 rounded-xl bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 transition";
+                document.getElementById('step-2').className = "step-card flex items-center sm:flex-col sm:items-start p-3 rounded-xl bg-brand-600/20 border border-brand-500/50 text-white transition";
+            } else if (targetPhase === 3) {
+                badge.className = "text-xs px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold";
+                badge.innerText = "Phase 3: Down Payment Confirmed - Active AI Build";
+                idDisplay.innerText = "CA-AI-8821-ACTIVE";
+
+                document.getElementById('step-1').className = "step-card flex items-center sm:flex-col sm:items-start p-3 rounded-xl bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 transition";
+                document.getElementById('step-2').className = "step-card flex items-center sm:flex-col sm:items-start p-3 rounded-xl bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 transition";
+                document.getElementById('step-3').className = "step-card flex items-center sm:flex-col sm:items-start p-3 rounded-xl bg-brand-600/20 border border-brand-500/50 text-white transition animate-pulse-light";
+            }
+        }
+
+        // Dev Drawer Controls
+        function openDevDrawer() {
+            document.getElementById('dev-drawer').classList.remove('hidden');
+        }
+
+        function closeDevDrawer() {
+            document.getElementById('dev-drawer').classList.add('hidden');
+        }
+
+        function saveApiKey() {
+            const key = document.getElementById('api-key-input').value.trim();
+            const feedback = document.getElementById('key-feedback');
+
+            if (key.startsWith('pk_live_') || key.startsWith('pk_test_') || key.startsWith('sk_live_') || key.startsWith('sk_test_')) {
+                state.stripeKey = key;
+                saveState();
+                feedback.className = "text-[11px] font-mono text-emerald-400";
+                feedback.innerText = "✔ Stripe API key saved successfully to local state!";
+                showToast("Stripe Key Saved!", "success");
+            } else {
+                feedback.className = "text-[11px] font-mono text-rose-400";
+                feedback.innerText = "✖ Invalid key format. Key must start with pk_live_, pk_test_, sk_live_, or sk_test_";
+            }
+        }
+
+        function copyCode(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            showToast("Node.js snippet copied to clipboard!", "info");
+        }
+
+        // Initialize Application
+        window.onload = function() {
+            loadState();
+        }
+    </script>
+</body>
+</html>
